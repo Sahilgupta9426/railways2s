@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+
+    <div class="container col-md-8">
+        <div class="table-responsive-md ">
+            <table class="table" style="border-inline-color:#159bd0; border:1px solid" >
+                <thead style="background-color:#159bd0;">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Number</th>
+                    
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody style="background-color: #92A8D1;">
+                    
+            
+                    <tr>
+                      
+                      <td>{{name}}</td>
+                      <td>{{age}}</td>
+                      <td>{{gender}}</td>
+                      <td>{{number}}</td> 
+                    </tr>
+                    
+                </tbody>
+              </table>
+        </div>
+        </div>
+
+    
+
+        <div class="container col-md-8">
+          <div class="table-responsive-md ">
+              <table class="table" style="border-inline-color:#159bd0; border:1px solid" >
+                  <thead style="background-color:#159bd0;">
+                    <tr>
+                      <th scope="col">Train No</th>
+                      <th scope="col">Train Name</th>
+                      <th scope="col">Source</th>
+                      <th scope="col">Destination</th>
+                      <th scope="col">Arrival time</th>
+                      <th scope="col">Fare</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Seats</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #92A8D1;">
+                      {% for t in trains %}
+              
+                      <tr>
+                        <th scope="row">{{t.train_no}}</th>
+                        <td>{{t.train_name}}</td>
+                        <td>{{t.source}}</td>
+                        <td>{{t.destination}}</td>
+                        <td>{{t.arrival_time}}</td>
+                        <td>Rs: {{t.fare}}</td>
+                        <td>{{date}}</td>
+                        <td>{{seat}}</td>
+                        
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+                
+                  <button id="rzp-button1">Pay</button>
+                
+                
+          <!-- this is customer booking form -->
+          </div>
+          </div>
+
+
+
+          
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+          <script>
+          var options = {
+              "key": "rzp_test_bOr7R6L3NnF9pU", // Enter the Key ID generated from the Dashboard
+              "amount": "{{amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+              "currency": "INR",
+              "name": "Acme Corp",
+              "description": "Test Transaction",
+              "image": "https://example.com/your_logo",
+              "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+              "handler": function (response){
+                  alert(response.razorpay_payment_id);
+                  alert(response.razorpay_order_id);
+                  alert(response.razorpay_signature);
+                  
+                  // save_payment_id=response.razorpay_payment_id;
+                  // save_order_id=
+              },
+              "prefill": {
+                  "name": "{{name}}",
+                  "email": "{{email}}",
+                  "contact": "{{number}}"
+              },
+              "notes": {
+                  "address": " "
+              },
+              "theme": {
+                  "color": "#3399cc"
+              }
+          };
+          var rzp1 = new Razorpay(options);
+          rzp1.on('payment.failed', function (response){
+                  alert(response.error.code);
+                  alert(response.error.description);
+                  alert(response.error.source);
+                  alert(response.error.step);
+                  alert(response.error.reason);
+                  alert(response.error.metadata.order_id);
+                  alert(response.error.metadata.payment_id);
+          });
+          document.getElementById('rzp-button1').onclick = function(e){
+              rzp1.open();
+              e.preventDefault();
+          }
+          </script>
+
+{% endblock body %}

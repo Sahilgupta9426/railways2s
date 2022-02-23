@@ -1,0 +1,12 @@
+{% extends 'base.html' %} 
+{% block body %}
+
+<div class="container mt-3">
+    <h3>Face Compare</h3>
+<form method="post" action="{% url 'home' %}" enctype="multipart/form-data">  
+    {% csrf_token %}  
+    {{ form.as_p }}  
+    <button type="submit" class="btn btn-success">Upload</button>  
+</form>
+</div>  
+{% endblock body %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% block body %}
+<div class="container mt-3">
+    <h3>Total Number of Text</h3>
+    {% for t in output %}
+    <p> {{t}}</p>
+    {% endfor %}
+</div>
+ <div class="container mt-3">
+    <h3>Your Image Texts</h3>
+    {% for t in list1 %}
+    <p> {{t}}</p>
+    {% endfor %}
+</div> 
+{% endblock body %}
