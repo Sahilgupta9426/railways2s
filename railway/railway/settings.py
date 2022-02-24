@@ -135,5 +135,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-RAZORPAY_API_KEY= 'rzp_test_bOr7R6L3N5nF9pU'
-RAZORPAY_API_SECRET_KEY= 'knN51nTcUuUjtg57ReTOSuZlY'
+RAZORPAY_API_KEY= 'rzp_test_bOr7R6L3NnF9pU'
+RAZORPAY_API_SECRET_KEY= 'knN1nTcUuUjtg57ReTOSuZlY'

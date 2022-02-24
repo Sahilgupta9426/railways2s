@@ -1,5 +1,3 @@
-
-from urllib import response
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render,redirect
 from django.template.loader import render_to_string
@@ -8,7 +6,7 @@ import razorpay
 client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
 
 
-import app
+
 from .forms import TravelForm,CustomerForm
 from .models import Train,Travel_Schedule
 from django.contrib import messages
@@ -108,9 +106,9 @@ def customer(request,pk):
     return JsonResponse(data)
 
 def payment(request):
-    
     if request.method=="POST":
         # form=CustomerForm(request.POST)
+        date=home.date2
         name=request.POST['cname']
         email=request.POST['email']
         age=request.POST['age']
@@ -118,12 +116,11 @@ def payment(request):
         number=request.POST['number']
         travel=customer.t1
         seat_no=customer.seat2
-        # det={'name':name,'age':age,'number':number,'gender':gender,'trains':travel,'seat':seat_no}
+        payment.det={'name':name,'age':age,'number':number,'gender':gender,'trains':travel,'seat':seat_no}
         #2 payment details
         order_currency = 'INR'
         order_receipt = 'order_rcptid_11'
         order_amount=100000
-        
         response = client.order.create(dict(amount=order_amount, currency=order_currency, receipt=order_receipt, payment_capture='0'))
         order_id = response['id']
         order_status = response['status']
@@ -135,6 +132,21 @@ def payment(request):
         response['trains']=travel
         response['seat']=seat_no
         response['order_id']=order_id
-        return render(request,'include/payment.html',response)
+        response['date']=date
+        # return render(request,'include/payment.html',response)
+        return render(request,'include/test.html',response)
+        
 def status(request):
-    pass
+    response = request.POST
+    print(response)
+    params_dict = {
+        'razorpay_payment_id' : response['razorpay_payment_id'],
+        'razorpay_order_id' : response['razorpay_order_id'],
+        'razorpay_signature' : response['razorpay_signature']
+    }
+    # VERIFYING SIGNATURE
+    try:
+        status = client.utility.verify_payment_signature(params_dict)
+        return render(request, 'include/order_summery.html', {'status': 'Payment Successful'})
+    except:
+        return render(request, 'include/order_summery.html', {'status': 'Payment Faliure!!!'})
