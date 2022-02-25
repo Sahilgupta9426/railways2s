@@ -36,6 +36,8 @@ class Booking(models.Model):
     number=models.CharField(max_length=11)
     email=models.CharField(max_length=100)
     seat_no=models.CharField(max_length=4,blank=True)
+    # journey_date=models.CharField(max_length=20)
+    # amount=models.IntegerField()
     p_status=models.BooleanField(default=False)
     s_id=models.ForeignKey(Travel_Schedule,on_delete=models.CASCADE)
 
@@ -44,3 +46,4 @@ class Transaction(models.Model):
     order_id=models.CharField(max_length=200)
     signature=models.CharField(max_length=200)
     bid=models.ForeignKey('Booking',on_delete=models.CASCADE)
+    # dateofbooking=models.DateTimeField(auto_now_add=True)

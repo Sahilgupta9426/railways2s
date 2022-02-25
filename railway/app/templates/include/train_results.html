@@ -68,22 +68,5 @@
     };
   $(".customerID1").click(getcutomer)
   });
-  {% comment %} function myFunction() {
-    alert("Hello! I am an alert box!");
-  } {% endcomment %}
-  //for seat check 
-  {% comment %} $(document).ready(function(){
-    setInterval(function(){
-      $.ajax({
-        type:'GET',
-        url:"{% url 'seat' %}",
-        success:function(data){
-          console.log("got data")
-        },
-        error:function(data){
-          alert("no data")
-        }
-      })
-    },1000);
-  }) {% endcomment %}
+ 
   </script>

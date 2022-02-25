@@ -134,8 +134,10 @@ def payment(request):
         response['order_id']=order_id
         response['date']=date
         # return render(request,'include/payment.html',response)
-        return render(request,'include/test.html',response)
-        
+        return render(request,'payment/test.html',response)
+
+
+#  status after payment and save customer details and transaction  
 def status(request):
     response = request.POST
     # print(response)
@@ -168,8 +170,17 @@ def status(request):
 
         
 
-        return render(request, 'include/order_summery.html', {'status': 'Payment Successful'})
+        return render(request, 'payment/order_summery.html', {'status': 'Payment Successful'})
     except:
-        # savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],sid=customer['trains'],p_status=False)
-        # savecustomer.save()
-        return render(request, 'include/order_summery.html', {'status': 'Payment Faliure!!!'})
+        
+        return render(request, 'payment/order_summery.html', {'status': 'Payment Faliure!!!'})
+
+
+def cutomer_booking_list(request):
+    data={}
+    booking=Booking.objects.all()
+    
+    data["html_form"]=render_to_string('include/booking_list.html', {
+        'book':booking
+            })
+    return JsonResponse(data)

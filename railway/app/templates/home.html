@@ -3,6 +3,11 @@
 {% load crispy_forms_tags %}
 {% block body %}
 
+<div class="container m-5 col-10">
+  <div id="customerlist1" class="container"> </div>
+</div>
+
+
 <div class="container col-5 mt-3">
   <form id="searchForm" method="POST">
     {% csrf_token %}
@@ -78,5 +83,32 @@
     source: availableTags
   });
       } );
-</script>
+
+
+{% comment %} for customer booking details {% endcomment %}
+$(function () {
+  var getcutomerlist = function () {
+    var btn = $(this);
+    
+    $.ajax({
+      url: "{% url 'customer_list' %}",
+      type: 'get',
+      // dataType: 'json',
+      beforeSend: function () {
+        $("#customerlist1").html("");
+        
+
+      },
+      success: function (data) {
+        {% comment %} $(".showhide_table").hide(); {% endcomment %}
+        $("#customerlist1").html(data.html_form);
+
+        
+      }
+    });
+  };
+$(".customerlist").click(getcutomerlist)
+
+});
+    </script>
 {% endblock scripts %}
