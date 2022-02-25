@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from numpy import number
+
+
+
 # Create your models here.
 class Travel_Schedule(models.Model):
     
@@ -22,12 +24,23 @@ class Train(models.Model):
     seat8=models.IntegerField()
     seat9=models.IntegerField()
     seat10=models.IntegerField()
-    sid=models.ForeignKey("Travel_Schedule",on_delete=models.CASCADE,related_name='train')
+    sid=models.ForeignKey("Travel_Schedule",on_delete=models.CASCADE)
 
-# class Booking(models.Model):
-#     bid=models.IntegerField(primary_key=True)
-#     cname=models.CharField(max_length=50)
-#     cage=models.IntegerField()
-#     cgender=models.CharField(max_length=12)
-#     cmnumber=models.IntegerField()
-#     sid=models.ForeignKey("Travel_Schedule",on_delete=models.CASCADE)
+class Booking(models.Model):
+    op=(('0', 'Male'),
+    ('1', 'Female'),
+    ('2', 'Transgender'))
+    name=models.CharField(max_length=50)
+    age=models.IntegerField()
+    gender=models.CharField(max_length=15,choices=op)
+    number=models.CharField(max_length=11)
+    email=models.CharField(max_length=100)
+    seat_no=models.CharField(max_length=4,blank=True)
+    p_status=models.BooleanField(default=False)
+    s_id=models.ForeignKey(Travel_Schedule,on_delete=models.CASCADE)
+
+class Transaction(models.Model):
+    payment_id=models.CharField(max_length=200)
+    order_id=models.CharField(max_length=200)
+    signature=models.CharField(max_length=200)
+    bid=models.ForeignKey('Booking',on_delete=models.CASCADE)

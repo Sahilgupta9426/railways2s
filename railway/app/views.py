@@ -1,17 +1,15 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render,redirect
 from django.template.loader import render_to_string
+from numpy import number
 from railway.settings import RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY 
 import razorpay
-client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
-
-
-
 from .forms import TravelForm,CustomerForm
-from .models import Train,Travel_Schedule
+from .models import Train ,Travel_Schedule,Transaction,Booking
 from django.contrib import messages
 import csv
 # Create your views here.
+client = razorpay.Client(auth=(RAZORPAY_API_KEY, RAZORPAY_API_SECRET_KEY))
 def home(request):
     form=TravelForm()
     data=dict()
@@ -84,6 +82,7 @@ def customer(request,pk):
     date=home.date2
     t=Travel_Schedule.objects.filter(train_no=pk)
     customer.t1=t
+    customer.pk_train_no=int(pk)
     
     seat=Train.objects.select_related('sid').filter(sid=pk)
     # 1.get seat number for seat number  
@@ -115,8 +114,9 @@ def payment(request):
         gender=request.POST['gender']
         number=request.POST['number']
         travel=customer.t1
+        pk=customer.pk_train_no
         seat_no=customer.seat2
-        payment.det={'name':name,'age':age,'number':number,'gender':gender,'trains':travel,'seat':seat_no}
+        payment.det={'name':name,'age':age,'number':number,'email':email,'gender':gender,'trains':pk,'seat_no':seat_no}
         #2 payment details
         order_currency = 'INR'
         order_receipt = 'order_rcptid_11'
@@ -138,15 +138,38 @@ def payment(request):
         
 def status(request):
     response = request.POST
-    print(response)
+    # print(response)
     params_dict = {
         'razorpay_payment_id' : response['razorpay_payment_id'],
         'razorpay_order_id' : response['razorpay_order_id'],
         'razorpay_signature' : response['razorpay_signature']
     }
     # VERIFYING SIGNATURE
+    customer=payment.det
+    status1=client.utility.verify_payment_signature(params_dict)
+    train_no=Travel_Schedule.objects.get(train_no=customer['trains'])
+    print('train_no',train_no)
+    if status1==True:
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],s_id=train_no,p_status=True)
+
+        savecustomer.save()
+        id=savecustomer.id
+        get_id=Booking.objects.get(id=id)
+
+        savetransaction=Transaction(payment_id=response['razorpay_payment_id'],order_id= response['razorpay_order_id'],signature=response['razorpay_signature'],bid=get_id)
+        savetransaction.save()
+    elif status==False:
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],s_id=train_no,p_status=False)
+        savecustomer.save()
     try:
+        
         status = client.utility.verify_payment_signature(params_dict)
+        print(status)
+
+        
+
         return render(request, 'include/order_summery.html', {'status': 'Payment Successful'})
     except:
+        # savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],sid=customer['trains'],p_status=False)
+        # savecustomer.save()
         return render(request, 'include/order_summery.html', {'status': 'Payment Faliure!!!'})
