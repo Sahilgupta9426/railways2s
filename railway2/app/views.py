@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render,redirect
+from django.shortcuts import get_object_or_404, redirect, render,redirect
 from django.template.loader import render_to_string
 from numpy import number
 from railway2.settings import RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY 
@@ -81,6 +81,9 @@ def exportcsv(request):
 def customer(request,pk):
     date=home.date2
     t=Travel_Schedule.objects.filter(train_no=pk)
+    for fare in t:
+        fare=fare.fare
+    customer.fare=fare
     customer.t1=t
     customer.pk_train_no=int(pk)
     
@@ -113,7 +116,7 @@ def payment(request):
         age=request.POST['age']
         gender=request.POST['gender']
         number=request.POST['number']
-        order_amount=100000
+        order_amount=100*int(customer.fare)
         travel=customer.t1
         pk=customer.pk_train_no
         seat_no=customer.seat2
@@ -151,10 +154,22 @@ def status(request):
     # VERIFYING SIGNATURE
     customer=payment.det
     status1=client.utility.verify_payment_signature(params_dict)
+    # update seat query
     train_no=Travel_Schedule.objects.get(train_no=customer['trains'])
-    print('train_no',train_no)
+    train_seat=Train.objects.filter(sid=customer['trains'])
+    for trainseat2 in train_seat:
+        train_seat1=trainseat2.seat1
+        tid=trainseat2.id
+    print('seat',train_seat1)
+    toupdateseat=Train.objects.get(id=tid)
+    # end update seat query
+    
     if status1==True:
-        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],amount=customer['amount'],journey_date=customer['date'],s_id=train_no,p_status=True)
+        train_seat1=train_seat1-1
+        toupdateseat.seat1=train_seat1
+        toupdateseat.save()
+        
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=train_seat1,amount=customer['amount'],journey_date=customer['date'],s_id=train_no,p_status=True)
 
         savecustomer.save()
         id=savecustomer.id
@@ -162,13 +177,14 @@ def status(request):
 
         savetransaction=Transaction(payment_id=response['razorpay_payment_id'],order_id= response['razorpay_order_id'],signature=response['razorpay_signature'],bid=get_id)
         savetransaction.save()
+
     elif status==False:
-        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],amount=customer['amount'],journey_date=customer['date'],s_id=train_no,p_status=False)
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],s_id=train_no,p_status=False)
         savecustomer.save()
     try:
         
         status = client.utility.verify_payment_signature(params_dict)
-        print(status)
+        
 
         
 
@@ -185,4 +201,16 @@ def cutomer_booking_list(request):
     data["html_form"]=render_to_string('include/booking_list.html', {
         'book':booking
             })
+    return JsonResponse(data)
+def cancel_booking(request, pk):
+    
+    book1=Booking.objects.filter(id=pk)
+    print(book1)
+    data={}
+    data["html_form"]=render_to_string('include/confirm.html', {
+        'book':book1
+            },request=request)
+    if request.method=="POST":
+        book1=Booking.objects.get(id=pk)
+        book1.delete()
     return JsonResponse(data)
