@@ -9,7 +9,7 @@
 </div>
 
 
-<div class="container col-5 mt-3">
+<div class="container col-5 mt-3 showhideform">
   <form id="searchForm" method="POST">
     {% csrf_token %}
     {{form|crispy}}
@@ -24,7 +24,7 @@
 
 </div>
 
-<div id="customer" class="container"> </div>
+<div id="customer" class="container customershowhide"> </div>
 
 
 
@@ -64,6 +64,7 @@
     });
     $(".showhide_table").hide();
   })
+
   $(function () {
     var availableTags2 = [
       {% for p1 in source %}
@@ -97,6 +98,10 @@ $(function () {
       // dataType: 'json',
       beforeSend: function () {
         $("#customerlist1").html("");
+        $(".showhideform").hide();
+        $(".showhide_table").hide();
+        $(".customershowhide").hide();
+        
         
 
       },
@@ -108,7 +113,7 @@ $(function () {
       }
     });
   };
-$(".customerlist").click(getcutomerlist)
+  $(".customerlist").click(getcutomerlist)
 
 
 });
