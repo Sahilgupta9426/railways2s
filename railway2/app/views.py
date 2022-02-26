@@ -202,15 +202,27 @@ def cutomer_booking_list(request):
         'book':booking
             })
     return JsonResponse(data)
+
+
 def cancel_booking(request, pk):
     
     book1=Booking.objects.filter(id=pk)
-    print(book1)
+    for b in book1:
+        s_id=b.s_id
+    train=Train.objects.filter(sid=s_id)
+    for t in train:
+        seat=t.seat1
+        tid=t.id
     data={}
     data["html_form"]=render_to_string('include/confirm.html', {
         'book':book1
             },request=request)
     if request.method=="POST":
+        
         book1=Booking.objects.get(id=pk)
         book1.delete()
+        train=Train.objects.get(id=tid)
+        train.seat1=seat+1
+        train.save()
+        return HttpResponse('hello')
     return JsonResponse(data)
