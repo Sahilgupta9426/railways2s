@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render,redirect
 from django.template.loader import render_to_string
 from numpy import number
-from project.settings import RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY 
+from railwaypro.settings import RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY 
 import razorpay
 from .forms import TravelForm,CustomerForm
 from .models import Train ,Travel_Schedule,Transaction,Booking
@@ -177,17 +177,17 @@ def status(request):
         toupdateseat.seat1=train_seat1
         toupdateseat.save()
         
-        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=train_seat1,amount=customer['amount'],journey_date=customer['date'],s_id=train_no,p_status=True)
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=train_seat1,amount=customer['amount'],journey_date=customer['date'],s_id=train_no,p_status=True,user=usr)
 
         savecustomer.save()
         id=savecustomer.id
         get_id=Booking.objects.get(id=id)
 
-        savetransaction=Transaction(payment_id=response['razorpay_payment_id'],order_id= response['razorpay_order_id'],signature=response['razorpay_signature'],bid=get_id)
+        savetransaction=Transaction(payment_id=response['razorpay_payment_id'],order_id= response['razorpay_order_id'],signature=response['razorpay_signature'],bid=get_id,user=usr)
         savetransaction.save()
 
     elif status==False:
-        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],seat_no=customer['seat_no'],s_id=train_no,p_status=False)
+        savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],s_id=train_no,p_status=False,user=usr)
         savecustomer.save()
     try:
         
