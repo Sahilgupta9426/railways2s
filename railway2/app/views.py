@@ -224,5 +224,5 @@ def cancel_booking(request, pk):
         train=Train.objects.get(id=tid)
         train.seat1=seat+1
         train.save()
-        return HttpResponse('hello')
+        return redirect('/home/')
     return JsonResponse(data)

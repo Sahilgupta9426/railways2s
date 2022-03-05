@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+<input type="button" value="piechart" class="piechartbutton btn btn-success">
+<input type="button" value="vegachart" class="vegachartbutton btn btn-primary">
+    <!--Div that will hold the pie chart-->
+    <div id="piechartajax" class="hidepiechart"></div>
+    <!--Div that will hold the vega chart-->
+    <div id="ajaxvegachart" class="hidevegachart"></div>
+</div>
+
+<script>
+    // piechar get data
+    $(function () {
+        var getlist = function () {
+          var btn = $(this);
+          
+          $.ajax({
+            url: "{% url 'piechart' %}",
+            type: 'get',
+            // dataType: 'json',
+            beforeSend: function () {
+              $("#piechartajax").html("");
+              $('.hidevegachart').hide();
+              $('.hidepiechart').show(); 
+             
+              
+              
+              
+      
+            },
+            success: function (ajaxdata) {
+              
+              $("#piechartajax").html(ajaxdata.html_form);
+      
+              
+            }
+          });
+        };
+        $(".piechartbutton").click(getlist)
+        
+      
+      });
+    //   piechart end
+
+
+    $(function () {
+        var getvega = function () {
+          var btn = $(this);
+          
+          $.ajax({
+            url: "{% url 'vegachart' %}",
+            type: 'get',
+            // dataType: 'json',
+            beforeSend: function () {
+              $("#ajaxvegachart").html("");
+              $('.hidepiechart').hide();
+              $('.hidevegachart').show();
+              
+              
+              
+      
+            },
+            success: function (ajaxdata) {
+            
+              
+              $("#ajaxvegachart").html(ajaxdata.html_form);
+      
+              
+            }
+          });
+        };
+        $(".vegachartbutton").click(getvega)
+        
+      
+      
+      });
+      </script>
+      
+    
+      {% endblock body %}
+    

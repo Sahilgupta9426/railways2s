@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render,redirect
 from django.template.loader import render_to_string
-from numpy import number
+from numpy import empty, number
 from railwaypro.settings import RAZORPAY_API_KEY,RAZORPAY_API_SECRET_KEY 
 import razorpay
 from .forms import TravelForm,CustomerForm
@@ -18,7 +18,7 @@ def home(request):
     if request.method == "POST" and request.is_ajax():
         form = TravelForm(request.POST)
         if form.is_valid():
-            date=request.POST['date']
+            date=request.POST['date'] 
             
             # print(request.POST['source'],request.POST['destination'])
             t = Travel_Schedule.objects.filter(source=request.POST['source'], destination=request.POST['destination'])
@@ -185,6 +185,8 @@ def status(request):
 
         savetransaction=Transaction(payment_id=response['razorpay_payment_id'],order_id= response['razorpay_order_id'],signature=response['razorpay_signature'],bid=get_id,user=usr)
         savetransaction.save()
+        detailforbill=savecustomer
+        transactiondet=savetransaction
 
     elif status==False:
         savecustomer=Booking(name=customer['name'],age=customer['age'],gender=customer['gender'],number=customer['number'],email=customer['email'],s_id=train_no,p_status=False,user=usr)
@@ -196,7 +198,7 @@ def status(request):
 
         
 
-        return render(request, 'payment/order_summery.html', {'status': 'Payment Successful'})
+        return render(request, 'payment/order_summery.html', {'status': 'Payment Successful','det':detailforbill,'tran':transactiondet})
     except:
         
         return render(request, 'payment/order_summery.html', {'status': 'Payment Faliure!!!'})
@@ -204,15 +206,22 @@ def status(request):
 @login_required
 def cutomer_booking_list(request):
     data={}
-    booking=Booking.objects.all()
-    
-    data["html_form"]=render_to_string('include/booking_list.html', {
+    usr=request.user
+    booking=Booking.objects.filter(user=usr)
+    length=len(booking)
+    if length==0:
+        data["html_form"]=render_to_string('include/booking_list.html', {
+        'avail':'No Ticket Available'
+            })
+    else:    
+        data["html_form"]=render_to_string('include/booking_list.html', {
         'book':booking
             })
     return JsonResponse(data)
 
 @login_required
 def cancel_booking(request, pk):
+    
     
     book1=Booking.objects.filter(id=pk)
     for b in book1:
@@ -234,3 +243,26 @@ def cancel_booking(request, pk):
         train.save()
         return redirect("/home/")
     return JsonResponse(data)
+
+# Python program to print berth type
+# of a provided seat number.
+
+# Function for printing berth type
+# def berth_type(s):
+	
+# 	if s>0 and s<73:
+# 		if s % 8 == 1 or s % 8 == 4:
+# 			print(s, "is lower berth")
+# 		elif s % 8 == 2 or s % 8 == 5:
+# 			print(s, "is middle berth")
+# 		elif s % 8 == 3 or s % 8 == 6:
+# 			print(s, "is upper berth")
+# 		elif s % 8 == 7:
+# 			print(s, "is side lower berth")
+# 		else:
+# 			print(s, "is side upper berth")
+# 	else:
+# 		print(s, "invalid seat number")
+
+# # Driver code
+# 	 # fxn call for berth type
