@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 
-from .models import Bike, Car
+from .models import Bike, Car, Country
 # Create your views here.
 def home(request):
     
@@ -35,10 +35,10 @@ def piechart(request):
 def vegachart(request):
     datas=Bike.objects.all()
     listcar=[]
-    for car in datas:
+    for bike in datas:
         
-        que=car.quantity
-        name=car.get_name_display()
+        que=bike.quantity
+        name=bike.get_name_display()
         
         
         listcar.append([name,que])
@@ -49,3 +49,20 @@ def vegachart(request):
     return JsonResponse(ajaxdata)
 
     
+def geochart(request):
+    ajaxdata={}
+    data=[
+            ['Country', 'Popularity']
+          ]
+    datas=Country.objects.all()
+    for country in datas:
+        
+        que=country.popularity
+
+        name=country.get_country_display()
+        
+        
+        data.append([name,que])
+    print(data)
+    ajaxdata["html_form"]=render_to_string('include/geochart.html', {'data':data},request=request)
+    return JsonResponse(ajaxdata)

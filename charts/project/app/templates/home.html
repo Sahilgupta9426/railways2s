@@ -4,10 +4,13 @@
 <div class="container mt-5">
 <input type="button" value="piechart" class="piechartbutton btn btn-success">
 <input type="button" value="vegachart" class="vegachartbutton btn btn-primary">
+<input type="button" value="geochart" class="geochartbutton btn btn-secondary">
     <!--Div that will hold the pie chart-->
     <div id="piechartajax" class="hidepiechart"></div>
     <!--Div that will hold the vega chart-->
     <div id="ajaxvegachart" class="hidevegachart"></div>
+    <!--Div that will hold the vega chart-->
+    <div id="ajaxgeochart" class="hidegeochart"></div>
 </div>
 
 <script>
@@ -24,6 +27,7 @@
               $("#piechartajax").html("");
               $('.hidevegachart').hide();
               $('.hidepiechart').show(); 
+              $('.hidegeochart').hide();
              
               
               
@@ -44,7 +48,7 @@
       });
     //   piechart end
 
-
+     //vegachart
     $(function () {
         var getvega = function () {
           var btn = $(this);
@@ -57,6 +61,7 @@
               $("#ajaxvegachart").html("");
               $('.hidepiechart').hide();
               $('.hidevegachart').show();
+              $('.hidegeochart').hide();
               
               
               
@@ -76,6 +81,41 @@
       
       
       });
+//vegachart end
+//GEOCHART
+      $(function () {
+        var getgeo = function () {
+          var btn = $(this);
+          
+          $.ajax({
+            url: "{% url 'geochart' %}",
+            type: 'get',
+            // dataType: 'json',
+            beforeSend: function () {
+              $("#ajaxgeochart").html("");
+              $('.hidepiechart').hide();
+              $('.hidevegachart').hide();
+              $('.hidegeochart').show();
+              
+              
+              
+      
+            },
+            success: function (ajaxdata) {
+            
+              
+              $("#ajaxgeochart").html(ajaxdata.html_form);
+      
+              
+            }
+          });
+        };
+        $(".geochartbutton").click(getgeo)
+        
+      
+      
+      });
+      //GEOCHART END
       </script>
       
     

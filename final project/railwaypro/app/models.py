@@ -41,10 +41,11 @@ class Booking(models.Model):
     amount=models.IntegerField(blank=True)
     p_status=models.BooleanField(default=False)
     s_id=models.ForeignKey(Travel_Schedule,on_delete=models.CASCADE)
+    
     user=models.ForeignKey('auth.User', related_name='+',on_delete=models.CASCADE)
 class Transaction(models.Model):
-    payment_id=models.CharField(max_length=200)
-    order_id=models.CharField(max_length=200)
+    payment_id=models.CharField(max_length=200,unique=True)
+    order_id=models.CharField(max_length=200,unique=True)
     signature=models.CharField(max_length=200)
     bid=models.ForeignKey('Booking',on_delete=models.CASCADE)
     dateofbooking=models.DateTimeField(auto_now_add=True)

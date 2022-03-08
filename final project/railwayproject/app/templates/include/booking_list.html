@@ -1,0 +1,103 @@
+
+<div class="table-responsive-lg">
+  
+  
+
+    <table class="table " id="train-table">
+      <thead>
+        <tr>
+          
+          <th scope="col">Train No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Journey Date</th>
+          <th scope="col">Email</th>
+          <th scope="col">Number</th>
+          <th scope="col">Seat No</th>
+          <th scope="col">Action</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in book %}
+  
+        <tr>
+          
+          <th scope="row">{{t.s_id.train_no}}</th>
+          <td>{{t.name}}</td>
+          <td>{{t.age}}</td>
+          <td>{{t.get_gender_display}}</td>
+          <td>{{t.journey_date}}</td>
+          <td>{{t.email}}</td>
+          <td>{{t.number}}</td>
+          <td>{{t.seat_no}}</td>
+          <td>  <button type="submit" class="btn btn-danger btn-sm cancelcustomer1"
+            data-url="{% url 'cancel' t.id %}">
+            Cancel Ticket</button>
+            <button type="submit" class="btn btn-warning btn-sm ticketclass"
+            data-url="{% url 'ticket' t.id %}">
+             Ticket</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h3>{{avail}}</h3>
+</div>
+
+
+<script>
+  //
+ 
+  $(function () {
+  var cancelcutomer3 = function () {
+    var btn = $(this);
+    
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      // dataType: 'json',
+      beforeSend: function () {
+        $(".can_customer_cls").html("");
+        
+
+      },
+      success: function (data) {
+        $(".showhide_table").hide();
+        $(".can_customer_cls").html(data.html_form);
+
+        
+      }
+    });
+  };
+$(".cancelcustomer1").click(cancelcutomer3)
+});
+
+
+$(function () {
+  var getticket = function () {
+    var btn = $(this);
+    
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      // dataType: 'json',
+      beforeSend: function () {
+        
+        $(".gotticket").html("");
+        
+
+      },
+      success: function (data) {
+        $(".can_customer_cls").hide()
+        $(".gotticket").html(data.html_form);
+
+        
+      }
+    });
+  };
+$(".ticketclass").click(getticket);
+});
+</script>

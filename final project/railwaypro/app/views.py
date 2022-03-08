@@ -198,7 +198,7 @@ def status(request):
 
         
 
-        return render(request, 'payment/order_summery.html', {'status': 'Payment Successful','det':detailforbill,'tran':transactiondet})
+        return render(request, 'payment/order_summery.html', {'status': 'Payment Successful','details':detailforbill,'tran':transactiondet})
     except:
         
         return render(request, 'payment/order_summery.html', {'status': 'Payment Faliure!!!'})

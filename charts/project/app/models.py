@@ -20,3 +20,17 @@ class Bike(models.Model):
     )
     name=models.CharField(max_length=11,choices=bop)
     quantity=models.IntegerField()
+
+class Country(models.Model):
+    cop=(
+    ('0', 'Germany'),
+    ('1', 'United States'),
+    ('2','Brazil'),
+    ('3','Canada'),
+    ('4','France'),
+    ('5','RU'),
+    ('6','India'),
+    
+    )
+    country=models.CharField(max_length=20,choices=cop,unique=True)
+    popularity=models.IntegerField()

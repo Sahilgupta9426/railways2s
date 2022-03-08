@@ -1,0 +1,17 @@
+{% for b in book  %}
+<form method="post" action="{% url 'cancel' b.id %}">
+    {% csrf_token %}
+    
+      
+        
+      
+    
+      <p class="lead">Are you sure you want to delete the book <strong>{{ book.name }}</strong>?</p>
+    
+    
+      <button type="submit" class="btn btn-danger">Delete book</button>
+      
+    </div>
+  </form>
+  {% endfor %} 
+  

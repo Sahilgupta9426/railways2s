@@ -1,0 +1,122 @@
+<div class="container m-3 col-9 border border-warning">
+    <h4 style="margin-left:10px;margin-bottom: 20px; margin-top: 15px;">Hello User :{{details.user}} </h4>
+    
+    <div class="table-responsive-lg">
+
+
+
+        <table class="table ">
+            <thead>
+                <tr>
+
+
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+
+                    <th scope="col">Email</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Seat No</th>
+                    <th scope="col">Coach</th>
+                    <th scope="col">Amount Paid</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                <tr>
+
+                    <th scope="row">{{details.name}}</th>
+
+                    <td>{{details.age}}</td>
+                    <td>{{details.get_gender_display}}</td>
+
+                    <td>{{details.email}}</td>
+                    <td>{{details.number}}</td>
+                    <td>{{details.seat_no}}</td>
+                    <td> S3 </td>
+                    <td> {{details.amount}} </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <table class="table ">
+            <thead>
+                <tr>
+
+
+                    <th scope="col">Train No</th>
+                    <th scope="col">Train Name</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Departure Time</th>
+                    <th scope="col">Journey Date</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+                <tr>
+
+                    <th scope="row">{{details.s_id.train_no}}</th>
+                    <td>{{details.s_id.train_name}}</td>
+                    <td>{{details.s_id.source}}</td>
+                    <td>{{details.s_id.destination}}</td>
+                    <td>{{details.s_id.arrival_time}}</td>
+                    <td>{{details.journey_date}}</td>
+
+
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <h4 style="margin-left:10px;margin-bottom: 20px; margin-top: 15px;">Transaction :{{tran.payment_id}} </h4>
+    <button type="submit" class="btn btn-warning btn-sm cancelcustomer1" data-url="{% url 'cancel' details.id %}">
+        Cancel Ticket</button>
+    
+        
+</div>
+
+<div class="container m-5 col-10">
+    <div id="can_customer_id" class="container can_customer_cls"> </div>
+
+</div>
+
+
+
+<script>
+    //
+
+    $(function () {
+        var cancelcutomer3 = function () {
+            var btn = $(this);
+
+            $.ajax({
+                url: btn.attr("data-url"),
+                type: 'get',
+                // dataType: 'json',
+                beforeSend: function () {
+                    $(".can_customer_cls").html("");
+
+
+                },
+                success: function (data) {
+                    $(".showhide_table").hide();
+                    $(".can_customer_cls").html(data.html_form);
+
+
+                }
+            });
+        };
+        $(".cancelcustomer1").click(cancelcutomer3)
+    });
+
+</script>

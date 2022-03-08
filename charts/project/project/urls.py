@@ -23,4 +23,5 @@ urlpatterns = [
     
     re_path(r'^home/piechart/$', views.piechart,name="piechart"),
     re_path(r'^home/vegachart/$', views.vegachart,name="vegachart"),
+    re_path(r'^home/geochart/$', views.geochart,name="geochart"),
 ]
