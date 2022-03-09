@@ -1,12 +1,46 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
 {% block body %}
+<div class=" container m-5 border border-warning">
+    <p style="margin-top:15px;">Amazon Rekognition can detect text in images and videos. It can then convert the detected
+        text into machine-readable text. You can use machine-readable text detection in images to
+        implement solutions such as:</p>
+    <ul>
+        <li>Visual search. For example, retrieving and displaying images that contain the same text.</li>
+        <li>Content insights. For example, providing insights into themes that occur in text that'srecognized in
+            extracted video frames. Your application can search recognized text for relevant content, such as news,
+            sport scores, athlete numbers, and captions.</li>
 
-<div class="container mt-3">
-    <h3>Face Compare</h3>
-<form method="post" action="{% url 'home' %}" enctype="multipart/form-data">  
-    {% csrf_token %}  
-    {{ form.as_p }}  
-    <button type="submit" class="btn btn-success">Upload</button>  
-</form>
-</div>  
+    </ul>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'text_capture' %}" class="btn btn-warning mt-2 mb-2">Text Capture</a>
+    </div>
+</div>
+
+<div class=" container m-5 border border-warning">
+    <p style="margin-top:15px;">
+        To compare a face in the source image with each face in the target image, use the CompareFaces operation.</p>
+
+    <p>To specify the minimum level of confidence in the match that you want returned in the response, use
+        similarityThreshold in the request. For more information, see CompareFaces.
+    </p>
+    <p>If you provide a source image that contains multiple faces, the service detects the largest face and uses it to
+        compare with each face that's detected in the target image.
+    </p>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'facecom' %}" class="btn btn-warning m-2">Face Compare </a>
+    </div>
+</div>
+
+
+<div class=" container m-5 border border-warning">
+    <p style="margin-top:15px;">Amazon Rekognition can detect Personal Protective Equipment (PPE) worn by persons in an image. 
+    You can use this information to improve workplace safety practices.
+     For example, you can use PPE detection to help determine if workers on a construction site are wearing 
+     head covers, or if medical workers are wearing face covers and hand covers. 
+     The following image shows some of the types of PPE that can detected.</p>
+    <div class="d-flex justify-content-center">
+     <a href="{% url 'maskdetect' %}" class="btn btn-warning m-2">PPE </a>
+    </div>
+</div>
 {% endblock body %}

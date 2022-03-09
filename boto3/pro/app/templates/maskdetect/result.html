@@ -1,7 +1,17 @@
 
 {% extends 'base.html' %} 
+{% block title %}PPE Detection Result{% endblock title %}
 {% block body %}
+<div class=" d-flex justify-content-center">
+    <img src="{{pic.url}}" class="mt-2 mb-2 item" alt="..."> 
+</div>
+<div class="container col-8 mt-3 mb-4 border border-primary">
+    <h3>Detections</h3>
 {% for person in list1 %}
+
+
 <p>{{person}}</p>
+
 {% endfor %}
+    </div>
 {% endblock body %}

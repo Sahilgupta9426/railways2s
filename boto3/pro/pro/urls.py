@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home,name="home"),
+    path('facecom/',views.faceCom,name="facecom"),
+
     path('textcap/',views.text_capture,name="text_capture"),
     path('maskdetect/',views.maskdetect,name="maskdetect")
 ]

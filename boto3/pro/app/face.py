@@ -7,7 +7,7 @@ import boto3
 
 def compare_faces(sourceFile, targetFile):
     # Authentication
-    client = boto3.client('rekognition', aws_access_key_id="", aws_secret_access_key="",region_name='ap-south-1')
+    client = boto3.client('rekognition', aws_access_key_id="AKIAUW2ODFNIMRNUGSXS2",aws_secret_access_key="3Wtf0x7LuB+0+4wxYNj1mjsWQDJec+YMre7MPcsGu",region_name='ap-south-1')
 
     # convert file format
     # imageSource = open(sourceFile, 'rb')

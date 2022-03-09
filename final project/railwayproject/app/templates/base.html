@@ -71,22 +71,22 @@ visibility: visible;
               {% if user.is_authenticated %}
               <li class="nav-item">
                 
-                <a class="customerlist nav-link" href="#">Booking</a>
+                <a class="customerlist nav-link active" href="#">Booking</a>
               </li>
               <li class="nav-item">
                 
-                <a class="customerlist nav-link" href="{% url 'account_logout' %}">Sign Out</a>
+                <a class="customerlist nav-link active" href="{% url 'account_logout' %}">Sign Out</a>
               </li>
               <li class="nav-item">
                 
-                <span class="customerlist nav-link" >{{ user }}</h5></span>
+                <span class="customerlist nav-link active" >{{ user }}</h5></span>
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+                <a class="nav-link active" href="{% url 'account_signup' %}">Sign Up</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_login' %}">Sign In</a>
+                <a class="nav-link active" href="{% url 'account_login' %}">Sign In</a>
               </li>
               {% endif %}
             </ul>

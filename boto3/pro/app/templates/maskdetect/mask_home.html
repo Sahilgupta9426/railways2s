@@ -1,11 +1,14 @@
 {% extends 'base.html' %} 
+{% block title %}PPE Detection{% endblock title %}
 {% block body %}
 
-<div class="container mt-3">
+<div class="container col-4 mt-3  border border-primary">
+    <h3 style="text-align: center;" class="mt-2"> Mask Detection</h3>
+    <h6 style="text-align: center;">Upload Here</h6>
 <form method="post" action="{% url 'maskdetect' %}" enctype="multipart/form-data">  
     {% csrf_token %}  
     {{ form.as_p }}  
-    <button type="submit" class="btn btn-success">Upload</button>  
+    <button type="submit" class="btn btn-success mb-3">Upload</button>  
 </form>
 </div>  
 {% endblock body %}

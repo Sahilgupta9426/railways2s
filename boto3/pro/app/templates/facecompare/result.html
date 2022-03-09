@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Result{% endblock title %}
+{% block body %}
+<div class="container mt-3">
+
+    {% if res == 1 %}
+    <h3 style="text-align: center;">photo has been matched</h3>
+    <div class="d-flex justify-content-center">
+
+        <img src="{{pic1.url}}" class="item" alt="...">
+        <img src="{{pic2.url}}" class="item" alt="...">
+
+    </div>
+
+    {% else %}
+    <div class="d-flex justify-content-center">
+        <h3>Not matched</h3>
+        <img src="{{pic1.url}}" class="item" alt="...">
+        <img src="{{pic2.url}}" class="item" alt="...">
+    </div>
+    {% endif %}
+
+
+
+</div>
+{% endblock body %}

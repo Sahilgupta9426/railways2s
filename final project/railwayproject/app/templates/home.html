@@ -4,6 +4,13 @@
 {% block body %}
 
  <!-- for delete -->
+ <div class="modal fade" id="modal-book">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+    </div>
+  </div>
+</div>
  <!-- end -->
 
 <div class="container m-5 col-10">
@@ -27,10 +34,11 @@
 </div>
 <div class="container mt-3 showhide_table">
   {% include 'include/train_results.html' %}
+  {% if user.is_authenticated %}
   <div class="container col-sm-1">
     <a href="{% url 'export_csv' %}" class="btn btn-primary btn-sm  mb-3">Download CSV</a>
   </div>
-
+ {% endif %}
 </div>
 
 <div id="customer" class="container customershowhide"> </div>

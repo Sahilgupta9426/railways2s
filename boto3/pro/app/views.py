@@ -6,9 +6,12 @@ from .forms import Profile, TextCapForm,Mask
 from .face import compare_faces
 from .textcap import detect_text
 from .mask import detect_labels
-from .models import ProfileFace
+from .models import ProfileFace, ppe, textdetaction
 # Create your views here.
+
 def home(request):
+    return render(request,'home.html')
+def faceCom(request):
     if request.method == 'POST':
         form = Profile(request.POST, request.FILES)  
         if form.is_valid():  
@@ -23,14 +26,16 @@ def home(request):
             print("Face matches: " + str(face_matches))
             print("here is picture 1 input :" , picture1)
             output=int(face_matches)
-            # obj=ProfileFace(picture1=picture1,picture2=picture2)
-            # obj.save()
-            return render(request, 'result.html',{'res':output})
+            obj=ProfileFace(picture1=picture1,picture2=picture2)
+            obj.save()
+            picture1=obj.picture1
+            picture2=obj.picture2
+            return render(request, 'facecompare/result.html',{'res':output,'pic1':picture1,'pic2':picture2})
           
     else:  
         form = Profile()  
   
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'facecompare/facecom.html', {'form': form})
 
 def text_capture(request):
     if request.method=="POST":
@@ -39,13 +44,16 @@ def text_capture(request):
             pic1=form.cleaned_data['pic1']
             bucket=''
             photo=pic1
-            text_count=detect_text(photo,bucket)
-            print("Text detected: " + str(text_count))
-            text_count=str(text_count)
-            list1=detect_text.list1
-
+            detect_text(photo,bucket)
             
-            return render(request,'textcapture/textresult.html',{'output':text_count,'list1':list1})
+            
+            list1=detect_text.list1
+            
+            obj=textdetaction(picture1=pic1)
+            obj.save()
+            picture1=obj.picture1
+            
+            return render(request,'textcapture/textresult.html',{'list1':list1,'pic':picture1})
         
     else:
         form=TextCapForm()
@@ -60,10 +68,12 @@ def maskdetect(request):
             photo=pic1
             bucket=''
             person_count=detect_labels(photo)
-            # response=detect_labels.resp
-            #test
+            detect=ppe(picture1=photo)
+            
             list1=detect_labels.informations
-            return render(request,'maskdetect/result.html',{'list1':list1})
+            detect.save()
+            pic=detect.picture1
+            return render(request,'maskdetect/result.html',{'list1':list1,'pic':pic})
         
     else:
         form=Mask()

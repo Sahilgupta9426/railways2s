@@ -7,7 +7,7 @@ from numpy import append
 def detect_labels(photo):
     Image=photo
     # photo=open(photo,'rb')
-    client = boto3.client('rekognition',aws_access_key_id="",aws_secret_access_key="",region_name='ap-south-1')
+    client = boto3.client('rekognition',aws_access_key_id="AKIAUW2ODFNIMRNUGSXS2",aws_secret_access_key="3Wtf0x7LuB+0+4wxYNj1mjsWQDJec+YMre7MPcsGu",region_name='ap-south-1')
 
     response = client.detect_protective_equipment(Image={'Bytes': Image.read()}, 
         SummarizationAttributes={'MinConfidence':80, 'RequiredEquipmentTypes':['FACE_COVER', 'HAND_COVER', 'HEAD_COVER']})

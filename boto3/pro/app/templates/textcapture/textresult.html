@@ -1,15 +1,15 @@
 {% extends 'base.html' %} 
+{% block title %}Result{% endblock title %}
 {% block body %}
-<div class="container mt-3">
-    <h3>Total Number of Text</h3>
-    {% for t in output %}
-    <p> {{t}}</p>
-    {% endfor %}
+<div class=" d-flex justify-content-center">
+<img src="{{pic.url}}" class="mt-2 mb-2 item" alt="..."> 
 </div>
- <div class="container mt-3">
-    <h3>Your Image Texts</h3>
+
+<div class="container col-8 mt-3 mb-4 border border-primary">
+    <h3 style="text-align: center;">Your Image Texts</h3>
     {% for t in list1 %}
     <p> {{t}}</p>
     {% endfor %}
-</div> 
+</div>
+
 {% endblock body %}
